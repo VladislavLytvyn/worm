@@ -1,0 +1,97 @@
+version: "3"
+
+services:
+  host_a:
+    build: build
+    command: ${COMMAND}
+    hostname: hostA
+    privileged: true
+    ports:
+    - "2222:22"
+    volumes:
+      - ./code:/code
+    networks:
+      net1:
+        ipv4_address: 10.10.100.1
+  host_b:
+    build: build
+    hostname: hostB
+    privileged: true
+
+    networks:
+      net1:
+        ipv4_address: 10.10.100.2
+      net2:
+        ipv4_address: 10.10.200.1
+  host_c:
+    build: build
+    hostname: hostC
+    privileged: true
+    networks:
+      net1:
+        ipv4_address: 10.10.100.3
+      net3:
+        ipv4_address: 172.29.100.1
+  host_d:
+    build: build
+    hostname: hostD
+    privileged: true
+    networks:
+      net2:
+        ipv4_address: 10.10.200.2
+  host_e:
+    build: build
+    hostname: hostE
+    privileged: true
+    networks:
+      net2:
+        ipv4_address: 10.10.200.3
+      net3:
+        ipv4_address: 172.29.100.2
+  host_f:
+    build: build
+    hostname: hostF
+    privileged: true
+    networks:
+      net3:
+        ipv4_address: 172.29.100.3
+      net4:
+        ipv4_address: 172.30.0.1
+  host_g:
+    build: build
+    privileged: true
+    hostname: hostG
+    networks:
+      net4:
+        ipv4_address: 172.30.0.2
+
+
+networks:
+  net1:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+      - subnet: 10.10.100.0/24
+        gateway: 10.10.100.32
+  net2:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+      - subnet: 10.10.200.0/24
+        gateway: 10.10.200.32
+  net3:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+      - subnet: 172.29.0.0/16
+        gateway: 172.29.0.1
+  net4:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+      - subnet: 172.30.0.0/16
+        gateway: 172.30.0.32
